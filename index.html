@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./output.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <title>Supabase Todo list</title>
+</head>
+
+<body class="bg-gradient-to-r from-white via-neutral-400 to-neutral-600">
+    <!-- main div -->
+    <div class="h-auto flex justify-center p-4">
+
+        <!-- login div -->
+        <div class="w-full max-w-md bg-gradient-to-r from-white via-neutral-400 to-neutral-600 rounded-2xl shadow-2xl p-8"
+            id="loginBar">
+
+            <h2 class="text-3xl font-bold text-center text-black mb-6">Login</h2>
+            <hr>
+            <form class="space-y-5 m-5">
+                <!-- Email -->
+                <div>
+                    <label class="block text-sm font-medium text-black mb-1">Email</label>
+                    <input type="email" placeholder="you@example.com" id="email"
+                        class="w-full px-4 py-3 rounded-xl border border-gray-300" />
+                </div>
+                <!-- Password -->
+                <div>
+                    <label class="block text-sm font-medium text-black mb-1">Password</label>
+                    <input type="password" placeholder="••••••••" id="password"
+                        class="w-full px-4 py-3 rounded-xl border border-gray-300" />
+                </div>
+
+                <!-- Button -->
+                <div class="btn flex justify-between items-center">
+
+                    <button id="signinbtn"
+                        class="bg-black hover:bg-gray-800 w-[40%] text-white font-medium py-3 rounded-xl shadow-md transition">Sign
+                        Up
+                    </button>
+                    <button id="loginbtn"
+                        class="bg-black hover:bg-gray-800 w-[40%] text-white font-medium py-3 rounded-xl shadow-md transition">
+                        Login
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Todo List div -->
+        <div class="container hidden w-full max-w-md sm:max-w-lg md:max-w-xl  bg-gradient-to-r from-white via-neutral-400 to-neutral-600 p-6 rounded-3xl shadow-lg"
+            id="todoSection">
+
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-center m-5">Supabase Todo List</h1>
+            <hr>
+            <header>
+                <form class="search mt-4 text-end flex justify-between items-center">
+                    <input type="text" placeholder="Search Todos..." id="search"
+                        class="p-2 mb-4 rounded-lg border border-black focus:outline-none focus:ring-2 focus:ring-black text-base sm:text-lg">
+                    <button class="p-3 w-[15%] bg-black rounded-2xl text-white" id="logout">Logout</button>
+                </form>
+            </header>
+
+            <form class="tasks mt-4">
+                <input type="text" id="task" placeholder="Enter Your Task"
+                    class="w-full p-2 mb-4 rounded-lg border border-black focus:outline-none focus:ring-2 focus:ring-black text-base sm:text-lg">
+                <textarea class="w-full border border-black p-2 h-40 rounded-lg text-xl" id="textarea" cols="100px"
+                    placeholder="Write a Message"></textarea>
+                <button id="add"
+                    class="text-end p-3 bg-black rounded-3xl text-white text-xl sm:text-2xl md:text-2xl hover:bg-gray-800 transition-colors">Add
+                    Task
+                </button>
+            </form>
+
+            <ul id="list" class="space-y-4">
+                <!-- <li class="lists flex justify-between items-center bg-gray-400 p-4 mt-3 rounded-2xl">
+                    <div class="flex flex-col">
+                        <span class="text-xl sm:text-2xl md:text-3xl font-bold">Read Books</span>
+                        <span class="text-md sm:text-lg md:text-2xl font-bold">Read Books</span>
+                    </div>
+                    <div class="flex space-x-1">
+                        <i class="fas fa-edit edit text-xl sm:text-2xl md:text-3xl font-bold cursor-pointer"></i>
+                        <i class="far fa-trash-alt delete text-xl sm:text-2xl md:text-3xl font-bold cursor-pointer"></i>
+                    </div>
+                </li> -->
+            </ul>
+
+        </div>
+
+    </div>
+
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="script.js"></script>
+
+</body>
+
+</html>
