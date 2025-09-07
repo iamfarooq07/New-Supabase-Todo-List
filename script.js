@@ -16,7 +16,45 @@ const addTask = document.getElementById("task");
 const textarea = document.getElementById("textarea");
 const addBtn = document.getElementById("add");
 const addList = document.getElementById("list");
+const imageInput = document.getElementById("image-input");
+const imageLoad = document.getElementById('image-input');
+const imgBox = document.getElementById('imgBox');
+console.log(imgBox);
 
+let uploadedImageUrl = "";
+
+// images upload
+imageLoad.addEventListener('change', async (e) => {
+
+    const file = e.target.files[0];
+    console.log(file.name);
+    const fileName = `${Date.now()}-${file.name}`;
+    console.log(fileName);
+
+    const { data, error } = await supabase.storage.from('todo-images').upload(`public/${fileName}`, file);
+
+    if (error) {
+        alert("Upload failed: " + error.message);
+        return;
+    }
+
+    console.log("Upload successful:", data);
+
+    const { data: urlData } = await supabase.storage
+        .from('todo-images')
+        .getPublicUrl(`public/${fileName}`);
+
+
+    if (error) {
+        alert(error.message)
+    }
+    console.log(urlData);
+
+    uploadedImageUrl = urlData.publicUrl;
+    console.log("Image URL:", uploadedImageUrl);
+
+})
+// ===========
 addList.addEventListener('click', async (e) => {
     if (e.target.classList.contains('fa-trash-alt')) {
         const li = e.target.closest("li");
@@ -51,23 +89,41 @@ addList.addEventListener('click', async (e) => {
 });
 
 
-
 function renderTodos(todos) {
     addList.innerHTML = "";
     todos.forEach((todo) => {
         addList.innerHTML += `
-      <li data-id="${todo.id}" class="lists flex justify-between items-center bg-gray-400 p-4 mt-3 rounded-2xl">
+      <li class="lists flex justify-between items-center bg-gray-400 p-4 mt-3 rounded-2xl" data-id="${todo.id}">
+        <img src="${todo.image_url || ''}" class="w-[24%] h-[24%] object-cover rounded-xl" />
         <div class="flex flex-col">
           <span class="text-xl sm:text-2xl md:text-3xl font-bold">${todo.title}</span>
-          <span class="text-sm sm:text-lg md:text-2xl font-semibold mt-2">${todo.contact}</span>
+          <span class="text-md sm:text-lg md:text-2xl font-bold">${todo.contact}</span>
         </div>
         <div class="flex space-x-1">
           <i class="fas fa-edit edit text-xl sm:text-2xl md:text-3xl font-bold cursor-pointer"></i>
-          <i class="far fa-trash-alt delete text-xl sm:text-2xl md:text-3xl font-bold cursor-pointer fa-trash-alt"></i>
+          <i class="far fa-trash-alt delete text-xl sm:text-2xl md:text-3xl font-bold cursor-pointer"></i>
         </div>
       </li>`;
     });
 }
+
+// function renderTodos(todos) {
+//     addList.innerHTML = "";
+//     todos.forEach((todo) => {
+//         addList.innerHTML += `
+//           <li class="lists flex justify-between items-center bg-gray-400 p-4 mt-3 rounded-2xl">
+//         <img src="${todo.image_url}" class="w-[24%] h-[24%]" id="imgBox">
+//         <div class="flex flex-col">
+//             <span class="text-xl sm:text-2xl md:text-3xl font-bold">${todo.title}</span>
+//             <span class="text-md sm:text-lg md:text-2xl font-bold">${todo.contains}</span>
+//         </div>
+//         <div class="flex space-x-1">
+//             <i class="fas fa-edit edit text-xl sm:text-2xl md:text-3xl font-bold cursor-pointer"></i>
+//             <i class="far fa-trash-alt delete text-xl sm:text-2xl md:text-3xl font-bold cursor-pointer"></i>
+//         </div>
+//     </li>`;
+//     });
+// }
 
 
 async function fetchTodos(userId) {
@@ -107,6 +163,7 @@ addBtn.addEventListener("click", async (e) => {
             .update({
                 title: inputVal,
                 contact: textVal,
+                image_url: uploadedImageUrl || todo.image_url,
             })
             .eq("id", editId)
             .eq("user_id", userId);
@@ -125,6 +182,7 @@ addBtn.addEventListener("click", async (e) => {
                 title: inputVal,
                 contact: textVal,
                 user_id: userId,
+                image_url: uploadedImageUrl,
             },
         ]);
 
@@ -132,6 +190,7 @@ addBtn.addEventListener("click", async (e) => {
             alert("Insert Error: " + error.message);
         } else {
             fetchTodos(userId);
+            uploadedImageUrl = ""
         }
     }
 
@@ -218,5 +277,6 @@ loginBtn.addEventListener("click", async (e) => {
     }
 })();
 
+// IMAGES
 
 
